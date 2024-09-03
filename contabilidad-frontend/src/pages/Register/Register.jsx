@@ -69,9 +69,9 @@ function Register() {
         <label htmlFor="nombre">Nombre</label>
         <input
           type="text"
-          id="nombre"
-          name="nombre"
-          value={formData.nombre}
+          id="name"
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           required
         />

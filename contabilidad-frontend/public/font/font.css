@@ -9,7 +9,7 @@
 }
 
 @font-face {
-    font-family: 'Dosis';
+    font-family: 'Dosis-bold';
     src: url('/font/Dosis/Dosis-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
@@ -24,7 +24,7 @@
 }
 
 @font-face {
-    font-family: 'SUSE';
+    font-family: 'SUSE-bold';
     src: url('/font/SUSE/SUSE-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;

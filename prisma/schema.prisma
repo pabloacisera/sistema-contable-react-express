@@ -12,19 +12,63 @@ model User {
   name     String
   email    String   @unique
   password String
-  rol      String
+  role     String
   clients  Client[] 
+  sales    Sale[]
 }
 
 model Client {
   id       Int    @id @default(autoincrement())
-  company  String
-  name     String
-  cuit     Int
-  location String
-  address  String
-  phone    Int
-  email    String @unique
+  company  String?
+  name     String?
+  cuit     Int?
+  location String?
+  address  String?
+  phone    Int?
+  email    String? @unique
   userId   Int
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sales    Sale[]
+}
+
+model Product {
+  id         Int       @id @default(autoincrement())
+  name       String?
+  price      Decimal?  @db.Decimal(10, 2)
+  stock      Int?
+  providerId Int?
+  provider   Provider? @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  sales      Sale[]
+  purchases  Purchase[]
+}
+
+model Provider {
+  id       Int       @id @default(autoincrement())
+  name     String?
+  purchases Purchase[]
+  products Product[]
+}
+
+model Sale {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  clientId   Int
+  productId  Int
+  quantity   Int?
+  totalPrice Decimal? @db.Decimal(10, 2)
+  date       DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Purchase {
+  id         Int      @id @default(autoincrement())
+  providerId Int
+  productId  Int
+  quantity   Int?
+  price      Decimal? @db.Decimal(10, 2)
+  date       DateTime @default(now())
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
