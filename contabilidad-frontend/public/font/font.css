@@ -1,0 +1,31 @@
+/* fonts.css */
+
+/* Fuente Dosis */
+@font-face {
+    font-family: 'Dosis';
+    src: url('/font/Dosis/Dosis-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Dosis';
+    src: url('/font/Dosis/Dosis-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Fuente SUSE */
+@font-face {
+    font-family: 'SUSE';
+    src: url('/font/SUSE/SUSE-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SUSE';
+    src: url('/font/SUSE/SUSE-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
