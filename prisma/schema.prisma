@@ -4,71 +4,77 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  name     String
-  email    String   @unique
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
   password String
-  role     String
-  clients  Client[] 
-  sales    Sale[]
+  role String
+  clients Client[]
+  sales Sale[]
 }
 
 model Client {
-  id       Int    @id @default(autoincrement())
-  company  String?
-  name     String?
-  cuit     String?
+  id Int @id @default(autoincrement())
+  company String?
+  name String?
+  cuit String?
   location String?
-  address  String?
-  phone    String?
-  email    String? @unique
-  userId   Int
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sales    Sale[]
+  address String?
+  phone String?
+  email String? @unique
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sales Sale[]
 }
 
 model Product {
-  id         Int       @id @default(autoincrement())
-  name       String?
-  price      Decimal?  @db.Decimal(10, 2)
-  stock      Int?
+  id Int @id @default(autoincrement())
+  name String?
+  price Decimal? @db.Decimal(10, 2)
+  stock Int?
   providerId Int?
-  provider   Provider? @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  sales      Sale[]
-  purchases  Purchase[]
+  provider Provider? @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  sales Sale[]
+  purchases Purchase[]
 }
 
 model Provider {
-  id       Int       @id @default(autoincrement())
-  name     String?
+  id Int @id @default(autoincrement())
+  name String?
+  company String?
+  cuit String?
+  location String?
+  address String?
+  phone String?
+  email String? @unique
   purchases Purchase[]
   products Product[]
 }
 
 model Sale {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  clientId   Int
-  productId  Int
-  quantity   Int?
+  id Int @id @default(autoincrement())
+  userId Int
+  clientId Int
+  productId Int
+  quantity Int?
   totalPrice Decimal? @db.Decimal(10, 2)
-  date       DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  date DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Purchase {
-  id         Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   providerId Int
-  productId  Int
-  quantity   Int?
-  price      Decimal? @db.Decimal(10, 2)
-  date       DateTime @default(now())
-  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  quantity Int?
+  price Decimal? @db.Decimal(10, 2)
+  date DateTime @default(now())
+  provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

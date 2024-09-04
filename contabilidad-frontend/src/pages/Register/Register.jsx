@@ -7,7 +7,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
-    role: "usuario",
+    role: "administrador",
   });
 
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ function Register() {
 
           const user = JSON.parse(localStorage.getItem('user'));
 
-          if (user.rol === 'administrador') {
+          if (user.role === 'administrador') {
             navigate('/dash-admin-page');
           } else {
             navigate('/dash-user-page');
@@ -100,7 +100,7 @@ function Register() {
         <select
           id="role"
           name="role"
-          value={formData.rol}
+          value={formData.role}
           onChange={handleChange}
           required
         >

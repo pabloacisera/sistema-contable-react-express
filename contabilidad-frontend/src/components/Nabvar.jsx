@@ -6,6 +6,7 @@ function DashboardNavBar() {
   return (
     <nav className="navbar">
       <ul>
+        <li><Link to="/dash-admin-page/admin-caja">Caja</Link></li>
         <li><Link to="/dash-admin-page/admin-libro">Libro</Link></li>
         <li><Link to="/dash-admin-page/admin-compra">Compra</Link></li>
         <li><Link to="/dash-admin-page/admin-venta">Venta</Link></li>

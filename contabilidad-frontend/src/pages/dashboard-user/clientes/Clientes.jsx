@@ -47,7 +47,7 @@ function Clientes() {
         ) : error ? (
           <p>Error al cargar clientes.</p>
         ) : clients.length === 0 ? (
-          <p>No hay clientes aún.</p>
+          <p className="no-clients-message">No hay clientes aún.</p>
         ) : (
           <table className="clients-table">
             <thead>
@@ -72,9 +72,7 @@ function Clientes() {
                   <td>{client.email}</td>
                   <td>
                     <button>Editar</button>
-                    <button onClick={() => openModal(client)}>
-                      Eliminar
-                    </button>
+                    <button onClick={() => openModal(client)}>Eliminar</button>
                     <button onClick={() => generarVenta(client.id)}>
                       Generar Venta
                     </button>
@@ -98,4 +96,3 @@ function Clientes() {
 }
 
 export default Clientes;
-

@@ -43,3 +43,9 @@
     background-color: #0056b3;
   }
   
+  .crear-cliente-container h4 {
+    color: #333; /* Asegúrate de que el color no sea el mismo que el fondo */
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  

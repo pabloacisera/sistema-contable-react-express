@@ -12,10 +12,10 @@ function DashboardUserNavBar() {
             <Link to="/dash-user-page/">Mis Clientes</Link>
           </li>
           <li>
-            <Link to="/dash-user-page/admin-products">Productos</Link>
+            <Link to="/dash-user-page/user-products">Productos</Link>
           </li>
           <li>
-            <Link to="/dash-user-page/admin-sales">Ventas</Link>
+            <Link to="/dash-user-page/user-sales">Ventas</Link>
           </li>
         </ul>
       </nav>

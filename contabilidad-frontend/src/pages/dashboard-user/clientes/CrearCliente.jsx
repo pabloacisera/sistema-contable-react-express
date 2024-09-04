@@ -74,7 +74,7 @@ function CrearCliente() {
 
   return (
     <div className="crear-cliente-container">
-      <h1>Crear Cliente</h1>
+      <h4>Crear Cliente</h4>
       {loading && <Spinner />} {/* Muestra el spinner mientras se carga */}
       <form onSubmit={handleSubmit} className="create-client-form">
         <div className="form-group">

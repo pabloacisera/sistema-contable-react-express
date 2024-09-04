@@ -45,7 +45,7 @@ function Login() {
 
           const user = JSON.parse(localStorage.getItem("user"));
 
-          if (user.rol === "administrador") {
+          if (user.role === "administrador") {
             navigate("/dash-admin-page");
           } else {
             navigate("/dash-user-page");

@@ -1,14 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import "./Proveedores.css"
 
 function Provedores() {
   const navigate = useNavigate();
 
-  
-  const generarProducto = (id) => {
-    console.log("id de prov: ", id);
-    navigate(`/dash-user-page/user-products/${id}`);
-  };
+  const [provs, setProvs] = useState([]);
 
   return (
     <div className="provs-container">
@@ -19,26 +16,45 @@ function Provedores() {
       </button>
 
       <div className="table-container">
-          <table className="provs-table">
-            <thead>
+        <table className="provs-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Empresa</th>
+              <th>CUIT</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {provs.length === 0 ? (
               <tr>
-                <th>Nombre</th>
-                <th>Empresa</th>
-                <th>CUIT</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Email</th>
-                <th>Acciones</th>
+                <td colSpan="7" className="no-provs-message">
+                  No hay proveedores registrados
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              
-            </tbody>
-          </table>
+            ) : (
+              provs.map((prov, index) => (
+                <tr key={index}>
+                  <td>{prov.nombre}</td>
+                  <td>{prov.empresa}</td>
+                  <td>{prov.cuit}</td>
+                  <td>{prov.direccion}</td>
+                  <td>{prov.telefono}</td>
+                  <td>{prov.email}</td>
+                  <td>
+                    {/* Aquí irían los botones de acciones para cada proveedor */}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 }
 
-
-export default Provedores
+export default Provedores;

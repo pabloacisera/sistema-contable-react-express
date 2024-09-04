@@ -14,12 +14,15 @@ import Ventas from "./pages/dashboard-user/ventas/Ventas";
 import Clientes from "./pages/dashboard-user/clientes/Clientes";
 import CrearCliente from "./pages/dashboard-user/clientes/CrearCliente";
 import NewProvider from "./pages/dashboard-admin/proveedores/new-provider/NewProvider";
+import { ProtectedRoute } from "./utility/protected-route/ProtectedRoute";
+import Caja from "./pages/dashboard-admin/caja/Caja";
 
 function DashboardAdminLayout() {
   return (
     <>
       <DashboardNavBar />
       <Routes>
+        <Route path="admin-caja" element={<Caja />} />
         <Route path="admin-libro" element={<Libro />} />
         <Route path="admin-compra" element={<Compra />} />
         <Route path="admin-venta" element={<Venta />} />
@@ -39,7 +42,7 @@ function DashboardUserLayout() {
         <Route path="" element={<Clientes />} />
         <Route path="create-clients" element={<CrearCliente />} />
         <Route path="user-products" element={<Productos />} />
-        <Route path="user-sales/:id" element={<Ventas />} />
+        <Route path="user-sales" element={<Ventas />} />
       </Routes>
     </>
   );
@@ -52,8 +55,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dash-user-page/*" element={<DashboardUserLayout />} />
-        <Route path="/dash-admin-page/*" element={<DashboardAdminLayout />} />
+
+
+        <Route path="/dash-user-page/*" element={<ProtectedRoute><DashboardUserLayout /></ProtectedRoute>} />
+        <Route path="/dash-admin-page/*" element={<ProtectedRoute><DashboardAdminLayout /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
