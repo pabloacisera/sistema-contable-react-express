@@ -9,9 +9,11 @@ import Compra from "./pages/dashboard-admin/compra/Compra";
 import Venta from "./pages/dashboard-admin/venta/Venta";
 import Provedores from "./pages/dashboard-admin/proveedores/Provedores";
 import DashboardUserNavBar from "./components/NabvarUser";
-import Clientes from "./pages/dashboard-user/clientes/Clientes";
 import Productos from "./pages/dashboard-user/productos/Productos";
-import Ventas from "./pages/dashboard-user/ventas/Ventas"
+import Ventas from "./pages/dashboard-user/ventas/Ventas";
+import Clientes from "./pages/dashboard-user/clientes/Clientes";
+import CrearCliente from "./pages/dashboard-user/clientes/CrearCliente";
+import NewProvider from "./pages/dashboard-admin/proveedores/new-provider/NewProvider";
 
 function DashboardAdminLayout() {
   return (
@@ -22,6 +24,8 @@ function DashboardAdminLayout() {
         <Route path="admin-compra" element={<Compra />} />
         <Route path="admin-venta" element={<Venta />} />
         <Route path="admin-provedores" element={<Provedores />} />
+        <Route path="admin-provedores" element={<Provedores />} />
+        <Route path="new-provider" element={<NewProvider />} />
       </Routes>
     </>
   );
@@ -32,14 +36,14 @@ function DashboardUserLayout() {
     <>
       <DashboardUserNavBar />
       <Routes>
-        <Route path="user-clients" element={ <Clientes /> } />
-        <Route path="user-products" element={ <Productos /> } />
-        <Route path="user-sales" element={ <Ventas /> } />
+        <Route path="" element={<Clientes />} />
+        <Route path="create-clients" element={<CrearCliente />} />
+        <Route path="user-products" element={<Productos />} />
+        <Route path="user-sales/:id" element={<Ventas />} />
       </Routes>
     </>
   );
 }
-
 
 function App() {
   return (
@@ -48,8 +52,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dash-user-page" element={<DashboardUserLayout />} />
-        <Route path="/dash-admin-page" element={<DashboardAdminLayout />} />
+        <Route path="/dash-user-page/*" element={<DashboardUserLayout />} />
+        <Route path="/dash-admin-page/*" element={<DashboardAdminLayout />} />
       </Routes>
     </BrowserRouter>
   );

@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 export const createUser = async (req, res) => {
   console.log(req.body);
-  const { name, email, password, rol } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
     const userFound = await prisma.user.findUnique({
@@ -28,7 +28,7 @@ export const createUser = async (req, res) => {
         name,
         email,
         password: hashPassword,
-        rol,
+        role,
       },
     });
 
@@ -37,7 +37,7 @@ export const createUser = async (req, res) => {
         id: newUser.id, // Se puede añadir el ID para facilitar autenticaciones futuras
         name: newUser.name,
         email: newUser.email,
-        rol: newUser.rol, // Incluyo el rol en el token
+        role: newUser.role, // Incluyo el rol en el token
       },
       JWT_SECRET,
       {
@@ -53,7 +53,7 @@ export const createUser = async (req, res) => {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
-        rol: newUser.rol,
+        role: newUser.role,
       },
     });
   } catch (error) {
@@ -92,7 +92,7 @@ export const loginUser = async (req, res) => {
         id: userFound.id,
         name: userFound.name,
         email: userFound.email,
-        rol: userFound.rol, // También incluyo el rol aquí
+        role: userFound.role, // También incluyo el rol aquí
       },
       JWT_SECRET,
       {
@@ -108,7 +108,7 @@ export const loginUser = async (req, res) => {
         id: userFound.id,
         name: userFound.name,
         email: userFound.email,
-        rol: userFound.rol,
+        role: userFound.role,
       },
     });
   } catch (error) {

@@ -21,10 +21,10 @@ model Client {
   id       Int    @id @default(autoincrement())
   company  String?
   name     String?
-  cuit     Int?
+  cuit     String?
   location String?
   address  String?
-  phone    Int?
+  phone    String?
   email    String? @unique
   userId   Int
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)

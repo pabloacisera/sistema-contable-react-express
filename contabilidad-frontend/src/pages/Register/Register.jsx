@@ -7,7 +7,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
-    rol: "usuario",
+    role: "usuario",
   });
 
   const navigate = useNavigate();
@@ -96,10 +96,10 @@ function Register() {
           required
         />
 
-        <label htmlFor="rol">Rol</label>
+        <label htmlFor="role">Rol</label>
         <select
-          id="rol"
-          name="rol"
+          id="role"
+          name="role"
           value={formData.rol}
           onChange={handleChange}
           required
