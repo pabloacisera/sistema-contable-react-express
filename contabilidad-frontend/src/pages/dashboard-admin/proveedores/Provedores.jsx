@@ -1,11 +1,36 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./Proveedores.css"
+import useFetchProviders from "../proveedores/provider-hook/FetchProvider";
+import ConfirmDeleteProiver from "../../../components/comfirmDeleteProvider/ConfirmedDeleteProvider";
 
 function Provedores() {
   const navigate = useNavigate();
 
-  const [provs, setProvs] = useState([]);
+  // Desestructurar como objeto
+  const { loading, provs, error, fetchProvider } = useFetchProviders();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [provToDelete, setProvToDelete] = useState(null);
+  const [provId, setProvId] = useState(null);
+
+  const refetchProvs = useCallback(() => {
+    fetchProvider();
+  }, [fetchProvider]);
+
+  const openModal = (prov) => {
+    setProvToDelete(prov);
+    setProvId(prov.id);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setProvToDelete(null);
+  };
+
+  const generarCompra = (id) => {
+    console.log('id de proveedor', id);
+  };
 
   return (
     <div className="provs-container">
@@ -13,7 +38,7 @@ function Provedores() {
         <Link to="/dash-admin-page/new-provider" className="button-link">
           Nuevo Proveedor
         </Link>
-      </button>
+      </button> 
 
       <div className="table-container">
         <table className="provs-table">
@@ -38,14 +63,16 @@ function Provedores() {
             ) : (
               provs.map((prov, index) => (
                 <tr key={index}>
-                  <td>{prov.nombre}</td>
-                  <td>{prov.empresa}</td>
+                  <td>{prov.name}</td>
+                  <td>{prov.company}</td>
                   <td>{prov.cuit}</td>
-                  <td>{prov.direccion}</td>
-                  <td>{prov.telefono}</td>
+                  <td>{prov.address}</td>
+                  <td>{prov.phone}</td>
                   <td>{prov.email}</td>
                   <td>
-                    {/* Aquí irían los botones de acciones para cada proveedor */}
+                    <button>Editar</button>
+                    <button onClick={() => openModal(prov)}>Eliminar</button>
+                    <button onClick={() => generarCompra(prov.id)}>Generar Compra</button>
                   </td>
                 </tr>
               ))
@@ -53,7 +80,14 @@ function Provedores() {
           </tbody>
         </table>
       </div>
-    </div>
+      <ConfirmDeleteProiver
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        prov={provToDelete}
+        id={provId}
+        onDelete={refetchProvs}
+      />
+    </div>     
   );
 }
 

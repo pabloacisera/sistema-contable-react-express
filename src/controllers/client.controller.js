@@ -16,7 +16,7 @@ export const createClient = async (req, res) => {
     email,
     userId,
   };
-
+ 
   console.log(data);
 
   try {
