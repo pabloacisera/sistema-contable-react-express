@@ -41,7 +41,7 @@ const NewProvider = () => {
       const result = await response.json();
   
       if (result.status) {
-        console.log('Cliente creado: ', result.data); // Aquí accedes a 'data' correctamente
+        console.log('Proveedor creado: ', result.data); // Aquí accedes a 'data' correctamente
         navigate("/dash-admin-page/admin-proveedores");
       } else {
         console.error('Error al crear cliente:', result.message);

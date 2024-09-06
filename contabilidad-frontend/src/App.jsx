@@ -16,6 +16,8 @@ import CrearCliente from "./pages/dashboard-user/clientes/CrearCliente";
 import NewProvider from "./pages/dashboard-admin/proveedores/new-provider/NewProvider";
 import { ProtectedRoute } from "./utility/protected-route/ProtectedRoute";
 import Caja from "./pages/dashboard-admin/caja/Caja";
+import VerProductos from "./pages/dashboard-admin/proveedores/admin-products/ver-producto/VerProductos";
+import CrearProducto from "./pages/dashboard-admin/proveedores/admin-products/crear-producto/CrearProducto"
 
 function DashboardAdminLayout() {
   return (
@@ -26,9 +28,11 @@ function DashboardAdminLayout() {
         <Route path="admin-libro" element={<Libro />} />
         <Route path="admin-compra" element={<Compra />} />
         <Route path="admin-venta" element={<Venta />} />
-        <Route path="admin-provedores" element={<Provedores />} />
-        <Route path="admin-provedores" element={<Provedores />} />
+        <Route path="admin-proveedores" element={<Provedores />} />
         <Route path="new-provider" element={<NewProvider />} />
+        <Route path="new-product/:id" element={<CrearProducto />} />
+        <Route path="view-product/:id" element={<VerProductos />} />
+
       </Routes>
     </>
   );

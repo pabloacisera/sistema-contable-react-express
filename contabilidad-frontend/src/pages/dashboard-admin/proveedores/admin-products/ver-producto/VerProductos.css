@@ -1,0 +1,101 @@
+/* Contenedor principal */
+.products-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1200px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Botón de nuevo producto */
+  .new-product-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Estilos para el enlace dentro del botón */
+  .new-product-button .button-link {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  /* Estilos para el enlace dentro del botón al pasar el cursor */
+  .new-product-button .button-link:hover {
+    text-decoration: none;
+  }
+  
+  /* Estilos al pasar el cursor por el botón */
+  .new-product-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Contenedor de la tabla */
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  /* Tabla de productos */
+  .products-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+  }
+  
+  /* Encabezado de la tabla */
+  .products-table th {
+    padding: 12px 15px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  /* Filas de la tabla */
+  .products-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  /* Alternar color de las filas */
+  .products-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Estilos al pasar el cursor por las filas */
+  .products-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Estilos para las celdas de acciones */
+  .products-table td:last-child {
+    text-align: center;
+  }
+  
+  /* Estilos para los enlaces de acciones en la tabla */
+  .products-table td a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .products-table td a:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  button {
+    margin: 3px;
+  }
+  

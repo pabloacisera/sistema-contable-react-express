@@ -9,8 +9,8 @@ function DashboardNavBar() {
         <li><Link to="/dash-admin-page/admin-caja">Caja</Link></li>
         <li><Link to="/dash-admin-page/admin-libro">Libro</Link></li>
         <li><Link to="/dash-admin-page/admin-compra">Compra</Link></li>
-        <li><Link to="/dash-admin-page/admin-venta">Venta</Link></li>
-        <li><Link to="/dash-admin-page/admin-provedores">Proveedores</Link></li>
+        <li><Link to="/dash-admin-page/admin-venta">Ventas</Link></li>
+        <li><Link to="/dash-admin-page/admin-proveedores">Proveedores</Link></li>
       </ul>
     </nav>
   );
