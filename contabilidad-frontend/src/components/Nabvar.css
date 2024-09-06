@@ -23,7 +23,8 @@
   .navbar a {
     color: #ecf0f1;
     text-decoration: none;
-    font-weight: 500; /* Negrita ligera */
+    font-weight: 700; /* Negrita ligera */
+    letter-spacing: 2px;
     transition: color 0.3s ease; /* Transición suave en el hover */
   }
   

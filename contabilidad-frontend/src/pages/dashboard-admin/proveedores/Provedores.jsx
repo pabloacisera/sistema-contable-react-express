@@ -14,6 +14,9 @@ function Provedores() {
   const [provToDelete, setProvToDelete] = useState(null);
   const [provId, setProvId] = useState(null);
 
+  //paginacion
+  const [currentPage, setCurrentPage] = useState(0);
+
   const refetchProvs = useCallback(() => {
     fetchProvider();
   }, [fetchProvider]);
@@ -34,8 +37,32 @@ function Provedores() {
     navigate(`/dash-admin-page/view-product/${id}`);
   };
 
+  //filtrado y paginacion
+  const filteredProvs = () => {
+    return provs.slice(currentPage, currentPage + 2);
+  };
+
+  const nextPage = () => {
+    setCurrentPage(currentPage + 2);
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 2);
+  };
+
+  /************************* */
+
   return (
     <div className="provs-container">
+      <div className="search-input-container">
+        <i className="search-icon fas fa-search"></i>
+        <input
+          type="text"
+          className="search-input-field"
+          placeholder="ingrese un nombre de proveedor"
+        />
+      </div>
+
       <button className="new-prov-button">
         <Link to="/dash-admin-page/new-provider" className="button-link">
           Nuevo Proveedor
@@ -66,7 +93,7 @@ function Provedores() {
                   </td>
                 </tr>
               ) : (
-                provs.map((prov, index) => (
+                filteredProvs().map((prov, index) => (
                   <tr key={index}>
                     <td>{prov.name}</td>
                     <td>{prov.company}</td>
@@ -82,9 +109,12 @@ function Provedores() {
                       </button>
                     </td>
                   </tr>
-                )) 
+                ))
               )}
             </tbody>
+            <button onClick={prevPage}>anterior</button>
+            &nbsp;
+            <button onClick={nextPage}>siguiente</button>
           </table>
         </div>
       )}
