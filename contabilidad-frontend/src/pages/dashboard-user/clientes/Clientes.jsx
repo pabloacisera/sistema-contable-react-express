@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Spinner from "../../../components/spinner/Spinner";
 import ConfirmDeleteModal from "../../../components/confirmDeleteModal/ConfirmDeleteModal";
 import useFetchClients from "../../dashboard-user/clientes/hook/FetchClients";
 import "./Clientes.css";
@@ -42,9 +41,7 @@ function Clientes() {
       </button>
 
       <div className="table-container">
-        {loading ? (
-          <Spinner />
-        ) : error ? (
+        {error ? (
           <p>Error al cargar clientes.</p>
         ) : clients.length === 0 ? (
           <p className="no-clients-message">No hay clientes aún.</p>

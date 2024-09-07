@@ -1,35 +1,71 @@
 /* styles.css */
 .navbar {
   padding: 20px;
-  background-color: #2c3e50; /* Cambiado a un tono más moderno */
-  color: #ecf0f1; /* Color claro para contraste */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  border-radius: 5px; /* Bordes redondeados */
-  margin-bottom: 20px; /* Espacio debajo de la barra */
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center; /* Centra los ítems en la barra */
+  position: relative; /* Para colocar el logout de manera absoluta */
 }
 
 .navbar ul {
   list-style: none;
   display: flex;
-  justify-content: center; /* Centrado horizontal */
+  justify-content: center; /* Centra los elementos de la lista */
   padding: 0;
   margin: 0;
 }
 
 .navbar li {
-  margin: 0 15px; /* Espacio entre elementos */
+  margin: 0 15px;
 }
 
 .navbar a {
   color: #ecf0f1;
   text-decoration: none;
-  font-weight: 500; /* Negrita ligera */
-  font-family: 'Courier New', Courier, monospace, sans-serif; /* Aplica la fuente Dosis */
-  letter-spacing: 2px;
-  transition: color 0.3s ease; /* Transición suave en el hover */
   font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 2px;
+  transition: color 0.3s ease;
 }
 
 .navbar a:hover {
-  color: #3498db; /* Color en hover */
+  color: #3498db;
+}
+
+.logout {
+  position: absolute;
+  right: 20px; /* Coloca el botón "Salir" a la derecha con espacio de 20px */
+  top: 50%;
+  transform: translateY(-50%); /* Centra verticalmente el botón "Salir" */
+  padding: 10px 15px;
+  background-color: slateblue;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.logout:hover {
+  background-color: darkslateblue;
+  color: black;
+  cursor: pointer;
+}
+
+.logout button {
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.logout button:hover {
+  background-color: darkslateblue;
+  color: black;
+  cursor: pointer;
 }

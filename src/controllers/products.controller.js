@@ -126,3 +126,22 @@ export const getProductForAdmin = async (req, res) => {
     return res.status(500).json({ status: false, message: 'Error interno en el servidor' });
   }
 };
+
+
+export const getOneProductById = async (req, res) => {
+  const { id } = req.params; // Obtener el ID desde los parámetros de la URL
+
+  try {
+    const product = await prisma.product.findFirst({
+      where: { id: Number(id) }, // Asegúrate de convertir el id a número si es necesario
+    });
+
+    if (!product) {
+      return res.status(400).json({ status: false, message: 'No se pudo encontrar el producto con ese id' });
+    }
+
+    return res.status(200).json({ status: true, data: product });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: 'Error interno en el servidor' });
+  }
+};

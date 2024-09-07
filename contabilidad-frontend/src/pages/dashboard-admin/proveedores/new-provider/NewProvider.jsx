@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./NewProvider.css";
-import Spinner from "../../../../components/spinner/Spinner";
 import { json, useNavigate } from "react-router-dom";
 
 const NewProvider = () => {
@@ -57,7 +56,6 @@ const NewProvider = () => {
   return (
     <div className="crear-cliente-container">
       <h4>Crear Proveedor</h4>
-      {loading && <Spinner />} {/* Mostrar Spinner cuando loading es true */}
       <form onSubmit={handleSubmit} className="create-client-form">
         <div className="form-group">
           <label htmlFor="company">Empresa</label>

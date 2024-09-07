@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate }  from 'react-router-dom'
 import './CrearCliente.css';
-import Spinner from '../../../components/spinner/Spinner'; // Importa el spinner si lo tienes
+
 
 function CrearCliente() {
 
@@ -75,7 +75,7 @@ function CrearCliente() {
   return (
     <div className="crear-cliente-container">
       <h4>Crear Cliente</h4>
-      {loading && <Spinner />} {/* Muestra el spinner mientras se carga */}
+      
       <form onSubmit={handleSubmit} className="create-client-form">
         <div className="form-group">
           <label htmlFor="company">Empresa</label>

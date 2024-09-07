@@ -32,3 +32,14 @@
     color: #3498db; /* Color en hover */
   }
   
+  /* Asegura que el logout esté alineado a la derecha */
+.logout {
+  position: absolute;
+  right: 20px; /* Coloca el "Salir" a la derecha con espacio de 20px */
+  top: 50%;
+  transform: translateY(-50%); /* Centra verticalmente el botón "Salir" */
+}
+
+.navbar .logout a:hover {
+  color: red;
+}

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "./Productos.css"
+import "../../../pages/TablesStyles.css";
 
 function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [providers, setProviders] = useState({}); // Estado para almacenar los proveedores por ID
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+  const [currentPage, setCurrentPage] = useState(0); // Estado para la página actual
 
   // Función para obtener todos los productos
   const getAllProducts = async () => {
@@ -69,8 +71,50 @@ function Productos() {
     getAllProducts();
   }, []);
 
+  // Filtrado y paginación
+  const productsPerPage = 5;
+
+  const filteredProducts = allProducts.filter((product) => {
+    return (
+      product.name &&
+      product.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+    );
+  });
+
+  const startIndex = currentPage * productsPerPage;
+  const paginatedProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(0); // Reiniciar la página al realizar una búsqueda
+  };
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(filteredProducts.length / productsPerPage) - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div>
+      <div>
+        <input
+          type="text"
+          className="search-input-field"
+          placeholder="Ingrese un nombre de proveedor"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
       <table>
         <thead>
           <tr>
@@ -79,21 +123,36 @@ function Productos() {
             <th>Precio</th>
             <th>Stock</th>
             <th>Proveedor</th>
+            <th>Venta</th>
           </tr>
         </thead>
         <tbody>
-          {allProducts.map((product) => (
+          {paginatedProducts.map((product) => (
             <tr key={product.id}>
               <td>{product.name}</td>
               <td>{product.description}</td>
               <td>$ {product.price}</td>
               <td>{product.stock}</td>
               <td>{providers[product.providerId] || "Cargando..."}</td>{" "}
-              {/* Mostramos el nombre del proveedor o "Cargando..." */}
+              <button>Venta</button>
             </tr>
           ))}
         </tbody>
       </table>
+      <div>
+        <button onClick={prevPage} disabled={currentPage === 0}>
+          Anterior
+        </button>
+        <button
+          onClick={nextPage}
+          disabled={
+            currentPage >=
+            Math.ceil(filteredProducts.length / productsPerPage) - 1
+          }
+        >
+          Siguiente
+        </button>
+      </div>
     </div>
   );
 }

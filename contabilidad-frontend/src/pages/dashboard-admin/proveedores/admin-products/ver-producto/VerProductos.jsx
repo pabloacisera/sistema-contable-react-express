@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import "./VerProductos.css";
-import Spinner from "../../../../../components/spinner/Spinner"; // Importa el spinner
-import ConfirmedDeleteProduct from "../../../../../components/confirmDeleteProduct/ConfirmDeleteProduct";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import ConfirmedDeleteModal from "../../../../../components/confirmDeleteModal/ConfirmDeleteModal";
+import "../../../../../pages/TablesStyles.css";
 
 const VerProductos = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
+  console.log("id del proveedor: ", id);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true); // Estado de carga
@@ -90,7 +91,10 @@ const VerProductos = () => {
   };
 
   const nextPage = () => {
-    if (currentPage < Math.ceil(filteredProducts.length / productsPerPage) - 1) {
+    if (
+      currentPage <
+      Math.ceil(filteredProducts.length / productsPerPage) - 1
+    ) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -101,10 +105,15 @@ const VerProductos = () => {
     }
   };
 
+  const comprarProducto = (id) => {
+    console.log("este es el id del producto: ", id )
+    navigate(`/dash-admin-page/new-purchase/${id}`)
+  };
+
   return (
-    <div className="products-container">
-      <div className="search-input-container">
-        <i className="search-icon fas fa-search"></i>
+    <div className>
+      <div>
+        <i></i>
         <input
           type="text"
           className="search-input-field"
@@ -114,73 +123,60 @@ const VerProductos = () => {
         />
       </div>
 
-      <button className="new-product-button">
-        <Link to={`/dash-admin-page/new-product/${id}`} className="button-link">
-          Agregar Producto
-        </Link>
-      </button>
-
-      {/* Mostrar spinner si está cargando */}
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className="table-container">
-          <table className="products-table">
-            <thead>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {error ? (
               <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Acciones</th>
+                <td colSpan="5">{error}</td>
               </tr>
-            </thead>
-            <tbody>
-              {error ? (
-                <tr>
-                  <td colSpan="5" className="error-message">
-                    {error}
+            ) : paginatedProducts.length === 0 ? (
+              <tr>
+                <td colSpan="5">No hay productos registrados</td>
+              </tr>
+            ) : (
+              paginatedProducts.map((product, index) => (
+                <tr key={index}>
+                  <td>{product.name}</td>
+                  <td>{product.description}</td>
+                  <td>${Number(product.price).toFixed(2)}</td>
+                  <td>{product.stock}</td>
+                  <td>
+                    <button>Editar</button>
+                    <button onClick={() => openModal(product)}>Eliminar</button>
+                    <button onClick={ ()=> comprarProducto(product.id)} >Comprar producto</button>
                   </td>
                 </tr>
-              ) : paginatedProducts.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="no-products-message">
-                    No hay productos registrados
-                  </td>
-                </tr>
-              ) : (
-                paginatedProducts.map((product, index) => (
-                  <tr key={index}>
-                    <td>{product.name}</td>
-                    <td>{product.description}</td>
-                    <td>${Number(product.price).toFixed(2)}</td>
-                    <td>{product.stock}</td>
-                    <td>
-                      <button>Editar</button>
-                      <button onClick={() => openModal(product)}>
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-          <div className="pagination-buttons">
-            <button onClick={prevPage} disabled={currentPage === 0}>
-              Anterior
-            </button>
-            <button
-              onClick={nextPage}
-              disabled={currentPage >= Math.ceil(filteredProducts.length / productsPerPage) - 1}
-            >
-              Siguiente
-            </button>
-          </div>
+              ))
+            )}
+          </tbody>
+        </table>
+        <div>
+          <button onClick={prevPage} disabled={currentPage === 0}>
+            Anterior
+          </button>
+          <button
+            onClick={nextPage}
+            disabled={
+              currentPage >=
+              Math.ceil(filteredProducts.length / productsPerPage) - 1
+            }
+          >
+            Siguiente
+          </button>
         </div>
-      )}
+      </div>
 
-      <ConfirmedDeleteProduct
+      <ConfirmedDeleteModal
         isOpen={isModalOpen}
         onClose={closeModal}
         product={productToDelete}

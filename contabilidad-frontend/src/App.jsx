@@ -18,6 +18,7 @@ import { ProtectedRoute } from "./utility/protected-route/ProtectedRoute";
 import Caja from "./pages/dashboard-admin/caja/Caja";
 import VerProductos from "./pages/dashboard-admin/proveedores/admin-products/ver-producto/VerProductos";
 import CrearProducto from "./pages/dashboard-admin/proveedores/admin-products/crear-producto/CrearProducto"
+import NewPurchase from "./pages/dashboard-admin/proveedores/admin-products/nueva-compra/NewPurchase";
 
 function DashboardAdminLayout() {
   return (
@@ -33,7 +34,7 @@ function DashboardAdminLayout() {
         <Route path="new-product/:id" element={<CrearProducto />} />
         <Route path="view-product/:id" element={<VerProductos />} />
         <Route path="view-all-products" element={<Productos />} />
-
+        <Route path="new-purchase/:id" element={<NewPurchase />} />
       </Routes>
     </>
   );

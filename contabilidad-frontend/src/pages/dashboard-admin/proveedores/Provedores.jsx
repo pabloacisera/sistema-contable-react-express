@@ -1,9 +1,8 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Proveedores.css";
+import "../../../pages/TablesStyles.css";
 import useFetchProviders from "../proveedores/provider-hook/FetchProvider";
-import ConfirmDeleteProvider from "../../../components/comfirmDeleteProvider/ConfirmedDeleteProvider";
-import Spinner from "../../../components/spinner/Spinner";
+import ConfirmDeleteModal from "../../../components/confirmDeleteModal/ConfirmDeleteModal";
 
 function Provedores() {
   const navigate = useNavigate();
@@ -64,10 +63,14 @@ function Provedores() {
     refetchProvs();
   }, [refetchProvs]);
 
+  const crearNuevoProveedor = () => {
+    navigate('/dash-admin-page/new-provider')
+  }
+
   return (
-    <div className="provs-container">
-      <div className="search-input-container">
-        <i className="search-icon fas fa-search"></i>
+    <div>
+      <div>
+        <i></i>
         <input
           type="text"
           className="search-input-field"
@@ -77,17 +80,11 @@ function Provedores() {
         />
       </div>
 
-      <button className="new-prov-button">
-        <Link to="/dash-admin-page/new-provider" className="button-link">
+      <button onClick={crearNuevoProveedor} >
           Nuevo Proveedor
-        </Link>
       </button>
-
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className="table-container">
-          <table className="provs-table">
+        <div>
+          <table>
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -102,7 +99,7 @@ function Provedores() {
             <tbody>
               {filteredProvs.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="no-provs-message">
+                  <td colSpan="7">
                     No hay proveedores registrados
                   </td>
                 </tr>
@@ -127,7 +124,7 @@ function Provedores() {
               )}
             </tbody>
           </table>
-          <div className="pagination-buttons">
+          <div>
             <button onClick={prevPage} disabled={currentPage === 0}>
               Anterior
             </button>
@@ -139,9 +136,8 @@ function Provedores() {
             </button>
           </div>
         </div>
-      )}
 
-      <ConfirmDeleteProvider
+      <ConfirmDeleteModal
         isOpen={isModalOpen}
         onClose={closeModal}
         prov={provToDelete}
