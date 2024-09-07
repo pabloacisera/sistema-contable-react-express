@@ -79,3 +79,25 @@ model Purchase {
   provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
+
+// Modelo de la Caja (saldo)
+model Cashbox {
+  id         Int        @id @default(autoincrement())
+  balance    Decimal    @db.Decimal(18, 2) // Saldo actual
+  date       DateTime   @default(now()) // Fecha del día de la caja
+  createdAt  DateTime   @default(now()) // Fecha de creación
+  updatedAt  DateTime   @updatedAt // Fecha de la última actualización
+  movements  Movement[] // Relación con los movimientos (ingresos/egresos)
+}
+
+
+// Modelo de Movimientos (ingresos/egresos)
+model Movement {
+  id         Int       @id @default(autoincrement())
+  amount     Decimal   @db.Decimal(10, 2) // Monto del movimiento
+  type       String    // 'Ingreso' o 'Egreso'
+  description String   // Descripción del movimiento
+  cashboxId  Int       // Relación con la caja
+  cashbox    Cashbox   @relation(fields: [cashboxId], references: [id], onDelete: Cascade)
+  date       DateTime  @default(now()) // Fecha del movimiento
+}

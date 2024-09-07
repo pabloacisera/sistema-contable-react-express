@@ -11,6 +11,7 @@ function DashboardNavBar() {
         <li><Link to="/dash-admin-page/admin-compra">Compra</Link></li>
         <li><Link to="/dash-admin-page/admin-venta">Ventas</Link></li>
         <li><Link to="/dash-admin-page/admin-proveedores">Proveedores</Link></li>
+        <li><Link to="/dash-admin-page/view-all-products">Productos</Link></li>
       </ul>
     </nav>
   );

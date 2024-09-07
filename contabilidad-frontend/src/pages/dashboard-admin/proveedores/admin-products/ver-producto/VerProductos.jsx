@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./VerProductos.css";
 import Spinner from "../../../../../components/spinner/Spinner"; // Importa el spinner
-import ConfirmedDeleteProduct from "../../../../../components/confirmDeleteProduct/ConfirmDeleteProduct"; 
+import ConfirmedDeleteProduct from "../../../../../components/confirmDeleteProduct/ConfirmDeleteProduct";
 
 const VerProductos = () => {
   const { id } = useParams();
@@ -13,6 +13,10 @@ const VerProductos = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
   const [productId, setProductId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const productsPerPage = 5; // Define cuántos productos se mostrarán por página
 
   // Convierte el id a número antes de pasar a la función getAllProducts
   const getAllProducts = async (id) => {
@@ -54,7 +58,6 @@ const VerProductos = () => {
     setProductId(product.id); // Verificar que `product.id` no sea `undefined`
     setIsModalOpen(true);
   };
-  
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -67,8 +70,50 @@ const VerProductos = () => {
     }
   };
 
+  // Filtrado y paginación
+  const filteredProducts = products.filter((product) => {
+    return (
+      product.name &&
+      product.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+    );
+  });
+
+  const startIndex = currentPage * productsPerPage;
+  const paginatedProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(0); // Reiniciar la página al realizar una búsqueda
+  };
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(filteredProducts.length / productsPerPage) - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="products-container">
+      <div className="search-input-container">
+        <i className="search-icon fas fa-search"></i>
+        <input
+          type="text"
+          className="search-input-field"
+          placeholder="Ingrese un nombre de proveedor"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+
       <button className="new-product-button">
         <Link to={`/dash-admin-page/new-product/${id}`} className="button-link">
           Agregar Producto
@@ -97,14 +142,14 @@ const VerProductos = () => {
                     {error}
                   </td>
                 </tr>
-              ) : products.length === 0 ? (
+              ) : paginatedProducts.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="no-products-message">
                     No hay productos registrados
                   </td>
                 </tr>
               ) : (
-                products.map((product, index) => (
+                paginatedProducts.map((product, index) => (
                   <tr key={index}>
                     <td>{product.name}</td>
                     <td>{product.description}</td>
@@ -121,6 +166,17 @@ const VerProductos = () => {
               )}
             </tbody>
           </table>
+          <div className="pagination-buttons">
+            <button onClick={prevPage} disabled={currentPage === 0}>
+              Anterior
+            </button>
+            <button
+              onClick={nextPage}
+              disabled={currentPage >= Math.ceil(filteredProducts.length / productsPerPage) - 1}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       )}
 

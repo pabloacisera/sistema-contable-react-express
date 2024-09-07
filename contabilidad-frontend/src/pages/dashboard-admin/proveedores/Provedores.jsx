@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Proveedores.css";
 import useFetchProviders from "../proveedores/provider-hook/FetchProvider";
@@ -7,15 +7,12 @@ import Spinner from "../../../components/spinner/Spinner";
 
 function Provedores() {
   const navigate = useNavigate();
-
-  // Desestructurar como objeto
   const { loading, provs, error, fetchProvider } = useFetchProviders();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [provToDelete, setProvToDelete] = useState(null);
   const [provId, setProvId] = useState(null);
-
-  //paginacion
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const refetchProvs = useCallback(() => {
     fetchProvider();
@@ -37,20 +34,35 @@ function Provedores() {
     navigate(`/dash-admin-page/view-product/${id}`);
   };
 
-  //filtrado y paginacion
-  const filteredProvs = () => {
-    return provs.slice(currentPage, currentPage + 2);
+  // Filtrar proveedores por el término de búsqueda
+  const filteredProvs = provs.filter((prov) => {
+    // Validar que el campo 'name' exista y que el término de búsqueda no esté vacío
+    return (
+      prov.name &&
+      prov.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+    );
+  });
+
+  // Paginar los proveedores filtrados
+  const paginatedProvs = filteredProvs.slice(currentPage, currentPage + 2);
+
+  // Manejo del cambio en el input de búsqueda
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(0); // Reiniciar la página al realizar una búsqueda
   };
 
   const nextPage = () => {
-    setCurrentPage(currentPage + 2);
+    setCurrentPage((prevPage) => Math.min(prevPage + 2, filteredProvs.length - 2));
   };
 
   const prevPage = () => {
-    setCurrentPage(currentPage - 2);
+    setCurrentPage((prevPage) => Math.max(prevPage - 2, 0));
   };
 
-  /************************* */
+  useEffect(() => {
+    refetchProvs();
+  }, [refetchProvs]);
 
   return (
     <div className="provs-container">
@@ -59,7 +71,9 @@ function Provedores() {
         <input
           type="text"
           className="search-input-field"
-          placeholder="ingrese un nombre de proveedor"
+          placeholder="Ingrese un nombre de proveedor"
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
       </div>
 
@@ -86,14 +100,14 @@ function Provedores() {
               </tr>
             </thead>
             <tbody>
-              {provs.length === 0 ? (
+              {filteredProvs.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="no-provs-message">
                     No hay proveedores registrados
                   </td>
                 </tr>
               ) : (
-                filteredProvs().map((prov, index) => (
+                paginatedProvs.map((prov, index) => (
                   <tr key={index}>
                     <td>{prov.name}</td>
                     <td>{prov.company}</td>
@@ -112,10 +126,18 @@ function Provedores() {
                 ))
               )}
             </tbody>
-            <button onClick={prevPage}>anterior</button>
-            &nbsp;
-            <button onClick={nextPage}>siguiente</button>
           </table>
+          <div className="pagination-buttons">
+            <button onClick={prevPage} disabled={currentPage === 0}>
+              Anterior
+            </button>
+            <button
+              onClick={nextPage}
+              disabled={currentPage + 2 >= filteredProvs.length}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       )}
 

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Cashbox" ALTER COLUMN "balance" SET DATA TYPE DECIMAL(18,2);

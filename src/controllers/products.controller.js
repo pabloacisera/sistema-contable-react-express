@@ -112,3 +112,17 @@ export const DeleteProductById = async (req, res) => {
     }
   }
 };
+
+export const getProductForAdmin = async (req, res) => {
+  try {
+    const products = await prisma.product.findMany(); // No es necesario .then(response => response.data)
+    
+    if (!products || products.length === 0) {
+      return res.status(200).json({ status: false, message: 'No se ha encontrado productos' });
+    }
+    
+    return res.status(200).json({ status: true, products });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: 'Error interno en el servidor' });
+  }
+};

@@ -32,6 +32,7 @@ function DashboardAdminLayout() {
         <Route path="new-provider" element={<NewProvider />} />
         <Route path="new-product/:id" element={<CrearProducto />} />
         <Route path="view-product/:id" element={<VerProductos />} />
+        <Route path="view-all-products" element={<Productos />} />
 
       </Routes>
     </>

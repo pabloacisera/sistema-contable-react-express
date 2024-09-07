@@ -1,0 +1,71 @@
+/* Caja.css */
+
+.container-saldo {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.container-saldo h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.container-saldo input[type="number"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.container-saldo button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.container-saldo button:hover {
+  background-color: #0056b3;
+}
+
+.container-saldo .saldo {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+}
+
+.container-saldo p {
+  font-size: 16px;
+  color: #666;
+  margin: 10px 0 5px 0;
+  text-align: center;
+}
+
+.container-saldo .fecha {
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-top: 5px;
+}
