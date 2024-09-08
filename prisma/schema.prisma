@@ -76,6 +76,7 @@ model Purchase {
   quantity Int?
   price Decimal? @db.Decimal(10, 2)
   date DateTime @default(now())
+  documents  Document[] // Relación con los documentos (opcional)
   provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
@@ -100,4 +101,17 @@ model Movement {
   cashboxId  Int       // Relación con la caja
   cashbox    Cashbox   @relation(fields: [cashboxId], references: [id], onDelete: Cascade)
   date       DateTime  @default(now()) // Fecha del movimiento
+  documents  Document[] // Relación con los documentos (opcional)
+}
+
+model Document {
+  id          Int      @id @default(autoincrement())
+  fileName    String?
+  fileType    String?  // MIME type: 'image/jpeg', 'application/pdf', etc.
+  fileContent Bytes?   // Contenido binario del archivo
+  purchaseId  Int?     // Relación opcional con la tabla Purchase
+  movementId  Int?     // Relación opcional con la tabla Movement
+  purchase    Purchase? @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  movement    Movement? @relation(fields: [movementId], references: [id], onDelete: Cascade)
+  uploadedAt  DateTime @default(now()) // Fecha de carga
 }

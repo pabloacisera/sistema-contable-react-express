@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function NewPurchase() {
+
+    const navigate = useNavigate()
+
     const [productForPurchase, setProductForPurchase] = useState(null); // Inicializa como null
     const [idProv, setIdProv] = useState(0);
     const [dataProvider, setDataProvider] = useState(null);
@@ -74,6 +77,33 @@ function NewPurchase() {
         const resultCalculated = monto * productForPurchase.price
         setPrecioTotal(resultCalculated)
     }
+
+    const confirmarCompra = () => {
+        const dataCompra = {
+            productId: id,
+            providerId: idProv,
+            quantity: monto,
+            totalPrice: precioTotal,
+            date: new Date().toISOString(),
+        }
+        console.log(dataCompra)
+
+        localStorage.setItem('Datos-Compra', JSON.stringify(dataCompra))
+
+        const dataMovement = {
+            amount: precioTotal,
+            type: 'Egreso',
+            description: `Compra de producto: ${productForPurchase.name}`,
+            date: new Date().toISOString(),
+            cashboxId: 39,
+        }
+        console.log(dataMovement)
+
+        localStorage.setItem('Datos-Movimiento', JSON.stringify(dataMovement))
+
+        navigate("/dash-admin-page/update-doc")
+    }
+
     return (
         <div>
             {productForPurchase ? (
@@ -105,7 +135,7 @@ function NewPurchase() {
                 <h4>Precio Total: ${precioTotal}</h4>
             </div>
 
-            <button>Confirmar Compra</button>
+            <button onClick={confirmarCompra} >Siguiente</button>
         </div>
     );
 }

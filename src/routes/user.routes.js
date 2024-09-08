@@ -4,6 +4,8 @@ import { createClient, deleteClientById, getAllClientByUserId } from "../control
 import { createProviders, deleteProviderById, getAllProvider, getProviderById } from "../controllers/prov.controller.js";
 import { CreateProduct, DeleteProductById, getAllProductsByProvId, getOneProductById, getProductForAdmin } from "../controllers/products.controller.js";
 import { getCashFromBox, createBalance, updateIntoCashFromBox, updateOutCashFromBox } from "../controllers/cashbox.js";
+import { createPurchase } from "../controllers/purchase.controller.js";
+import { createMovement } from "../controllers/movement.controller.js";
 
 const router = Router()
 
@@ -38,5 +40,11 @@ router.post('/create-balance', createBalance)//cargar saldo inciail
 router.get('/get-balance', getCashFromBox)//devolver el saldo
 router.post('/update-into-balance', updateIntoCashFromBox)//actualizar saldo
 router.post('/update-out-balance', updateOutCashFromBox)//retirar saldo
+
+//crear y lista comprar
+router.post('/create-purchase', createPurchase)
+
+//crear y listar movimientos
+router.post('/create-movement', createMovement )
 
 export default router 
