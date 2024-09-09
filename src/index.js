@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import routes from "./routes/user.routes.js";
 import http from "http"; // Importar http para crear el servidor
+import bodyParser from "body-parser";
 
 //socket.io
 import { Server } from "socket.io"; // Cambiar la importación a solo 'Server'
@@ -26,8 +27,8 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Crear servidor HTTP
 const server = http.createServer(app);

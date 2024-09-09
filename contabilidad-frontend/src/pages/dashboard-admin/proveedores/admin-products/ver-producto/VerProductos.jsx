@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import ConfirmedDeleteModal from "../../../../../components/confirmDeleteModal/ConfirmDeleteModal";
-import "../../../../../pages/TablesStyles.css";
 
 const VerProductos = () => {
   const navigate = useNavigate();
@@ -105,23 +104,31 @@ const VerProductos = () => {
     }
   };
 
+  const crearProducto = (id) => {
+    navigate(`/dash-admin-page/new-product/${id}`)//se envia el id del proveedor
+  }
+
   const comprarProducto = (id) => {
     console.log("este es el id del producto: ", id )
     navigate(`/dash-admin-page/new-purchase/${id}`)
   };
 
   return (
-    <div className>
+    <div>
       <div>
         <i></i>
         <input
           type="text"
           className="search-input-field"
-          placeholder="Ingrese un nombre de proveedor"
+          placeholder="Ingrese un nombre de producto"
           value={searchTerm}
           onChange={handleSearchChange}
         />
       </div>
+
+      <button onClick={()=>crearProducto(id)} >
+          Nuevo Producto
+      </button>
 
       <div>
         <table>

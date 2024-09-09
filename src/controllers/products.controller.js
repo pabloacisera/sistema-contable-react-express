@@ -16,7 +16,7 @@ export const CreateProduct = async (req, res) => {
   }
 
   // Verifica que los campos obligatorios estén presentes
-  if (!name || !price || !stock) {
+  if (!name || !price ) {
     return res.status(400).json({
       status: false,
       message: "Faltan datos necesarios para crear el producto",

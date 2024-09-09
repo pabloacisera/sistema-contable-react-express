@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../../pages/TablesStyles.css";
 import useFetchProviders from "../proveedores/provider-hook/FetchProvider";
 import ConfirmDeleteModal from "../../../components/confirmDeleteModal/ConfirmDeleteModal";
+import "./global.css"
 
 function Provedores() {
   const navigate = useNavigate();

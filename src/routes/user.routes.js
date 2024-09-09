@@ -1,13 +1,18 @@
 import { Router } from "express";
+import multer from "multer";
 import { createUser, loginUser } from "../controllers/user.controllers.js";
 import { createClient, deleteClientById, getAllClientByUserId } from "../controllers/client.controller.js";
 import { createProviders, deleteProviderById, getAllProvider, getProviderById } from "../controllers/prov.controller.js";
 import { CreateProduct, DeleteProductById, getAllProductsByProvId, getOneProductById, getProductForAdmin } from "../controllers/products.controller.js";
 import { getCashFromBox, createBalance, updateIntoCashFromBox, updateOutCashFromBox } from "../controllers/cashbox.js";
 import { createPurchase } from "../controllers/purchase.controller.js";
-import { createMovement } from "../controllers/movement.controller.js";
+import { createMovement, getAllMovement } from "../controllers/movement.controller.js";
+import { createDocument } from "../controllers/documents.controller.js";
 
 const router = Router()
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 router.post("/create_user", createUser)
 router.post("/login_user", loginUser)
@@ -46,5 +51,10 @@ router.post('/create-purchase', createPurchase)
 
 //crear y listar movimientos
 router.post('/create-movement', createMovement )
+router.get('/get-all-movement', getAllMovement)
+
+//crear documentos
+router.post('/create-document', upload.single('document'), createDocument);
+
 
 export default router 

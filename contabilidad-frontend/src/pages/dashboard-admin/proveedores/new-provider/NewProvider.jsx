@@ -41,9 +41,11 @@ const NewProvider = () => {
   
       if (result.status) {
         console.log('Proveedor creado: ', result.data); // Aquí accedes a 'data' correctamente
+        alert('Proveedor creado exitosamente')
         navigate("/dash-admin-page/admin-proveedores");
       } else {
         console.error('Error al crear cliente:', result.message);
+        alert('No se ha podido crear proveedor')
       }
   
       setLoading(false);

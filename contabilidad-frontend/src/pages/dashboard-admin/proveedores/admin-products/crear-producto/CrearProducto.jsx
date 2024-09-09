@@ -42,7 +42,7 @@ function CrearProducto() {
       if (result.status) {
         console.log("Producto creado", result.data);
         alert("Producto creado exitosamente.");
-        navigate(`/dash-admin-page/view-product/${id}`);
+        navigate(`/dash-admin-page/admin-proveedores`);
       } else {
         console.error("Error al crear el producto:", result.message);
         alert("No se pudo crear el producto.");
@@ -87,13 +87,13 @@ function CrearProducto() {
           />
         </div>
         <div>
+          <span>El stock solo debe ser completa si su valor es 0 en el momento de crear el producto</span>
           <label>Stock:</label>
           <input
             type="number"
             name="stock"
             value={product.stock}
             onChange={handleChange}
-            required
           />
         </div>
         <button type="submit">Crear Producto</button>

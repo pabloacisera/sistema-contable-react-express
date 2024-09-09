@@ -95,7 +95,7 @@ function NewPurchase() {
             type: 'Egreso',
             description: `Compra de producto: ${productForPurchase.name}`,
             date: new Date().toISOString(),
-            cashboxId: 39,
+            cashboxId: 40,
         }
         console.log(dataMovement)
 

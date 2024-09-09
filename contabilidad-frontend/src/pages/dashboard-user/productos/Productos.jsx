@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../../pages/TablesStyles.css";
+import "../../dashboard-admin/proveedores/global.css";
 
 function Productos() {
   const [allProducts, setAllProducts] = useState([]);
@@ -110,7 +110,7 @@ function Productos() {
         <input
           type="text"
           className="search-input-field"
-          placeholder="Ingrese un nombre de proveedor"
+          placeholder="Ingrese un nombre de producto"
           value={searchTerm}
           onChange={handleSearchChange}
         />

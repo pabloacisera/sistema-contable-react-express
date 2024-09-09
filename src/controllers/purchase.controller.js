@@ -9,7 +9,7 @@ export const createPurchase = async(req, res) => {
     try {
         const purchase = await prisma.purchase.create({
             data: {
-                providerId: Number(providerId),
+                providerId: Number(providerId), 
                 productId: Number(productId),
                 quantity: Number(quantity),
                 price: Number(totalPrice),  // Asegúrate de que el campo correcto sea `price`

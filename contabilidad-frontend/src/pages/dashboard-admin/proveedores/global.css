@@ -1,0 +1,178 @@
+/* General settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+  }
+  
+  h2, h3, h5 {
+    color: #004085; /* Estilo para títulos */
+  }
+  
+  input, button {
+    font-family: inherit;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Estilo de tablas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  table thead {
+    background-color: #007bff;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  
+  table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  table button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  table button:hover {
+    background-color: #218838;
+  }
+  
+  table button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  /* Search input */
+  .search-input-field {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* Botón nuevo proveedor */
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  /* Contenedores */
+  div {
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para formularios */
+  input[type="number"], input[type="file"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Modales */
+  .modal {
+    display: none; /* El modal debe activarse con lógica JS */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 10px;
+  }
+  
+  .modal.is-active {
+    display: block;
+  }
+  
+  .modal-header {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .modal-buttons button {
+    width: 45%;
+  }
+  
+  /* Estilos para paginación */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    table {
+      font-size: 0.9em;
+    }
+  
+    input, button {
+      font-size: 0.9em;
+    }
+  
+    .search-input-field {
+      max-width: 100%;
+    }
+  }
+  
