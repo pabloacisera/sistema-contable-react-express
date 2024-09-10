@@ -1,104 +1,106 @@
 import React, { useState, useEffect } from "react";
 import "../proveedores/global.css";
+import "./Caja.css";
 import { formatDate } from "../../../utility/date-format/dateFormat";
 
 function Caja() {
-  const [primerSaldo, setPrimerSaldo] = useState(0);
-  const [cashInBox, setCashInBox] = useState(0);
-  const [dateInBox, setDateInBox] = useState("");
+  const [saldo, setSaldo] = useState(""); // Usar string para el input inicial
+  const [cashInBox, setCashInBox] = useState(null);
+  const [dateInBox, setDateInBox] = useState(null);
   const [movements, setMovements] = useState([]);
 
-  useEffect(() => {
-    const obtenerSaldoDesdeBackend = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/api/v1/get-balance",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const data = await response.json();
-
-        if (data.status) {
-          setCashInBox(Number(data.response.balance) || 0);
-          setDateInBox(formatDate(data.response.date));
-        } else {
-          console.error("No se ha encontrado registro.");
-        }
-
-        await getMovements();
-      } catch (error) {
-        console.error("Error al obtener datos del servidor:", error);
-      }
-    };
-
-    obtenerSaldoDesdeBackend();
-  }, []);
-
+  // Función para obtener el valor del input y actualizar el saldo
   const obtenerSaldo = (event) => {
-    const saldo = parseFloat(event.target.value);
-    setPrimerSaldo(isNaN(saldo) ? 0 : saldo);
+    const inputValue = event.target.value; // Capturar el valor del input
+    setSaldo(inputValue); // Actualizar el estado con el valor ingresado
   };
 
-  const cargarSaldoInicial = async () => {
-    const date = new Date();
-    const formattedDate = date.toISOString();
-
-    const newBalance = {
-      balance: primerSaldo,
-      date: formattedDate,
-    };
-
+  // Función para crear el balance
+  const cargarSaldoInicial = async (crearBalance) => {
     try {
       const response = await fetch(
         "http://localhost:3000/api/v1/create-balance",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newBalance),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(crearBalance),
         }
       );
 
       const data = await response.json();
-      if (data.status) {
-        setCashInBox(Number(data.balance) || 0);
-        setDateInBox(formatDate(data.date));
-      }
-      setPrimerSaldo("");
+      console.log(data);
+      return data;
     } catch (error) {
-      console.error("No se ha podido obtener respuesta del servidor: ", error);
+      throw new Error("No se ha podido enviar datos al backend");
     }
   };
 
-  const getMovements = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:3000/api/v1/get-all-movement",
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
+  // Función que se ejecuta al hacer clic en el botón para cargar saldo
+  const handleCargarSaldo = () => {
+    const crearBalance = {
+      balance: saldo,
+      date: new Date().toISOString(),
+    };
+    cargarSaldoInicial(crearBalance)
+      .then((data) => {
+        if (data.status) {
+          // Actualizar estado con el saldo y la fecha
+          setCashInBox(parseFloat(data.response.balance));
+          setDateInBox(formatDate(data.response.date));
         }
-      );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
-      if (response.ok) {
-        const data = await response.json();
-        setMovements(data.response || []);
-      } else {
-        console.error(
-          "Error en la respuesta del servidor:",
-          response.statusText
-        );
+  // Obtener saldo actualizado
+  const obtenerSaldoActualizado = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/get-balance", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      // Esperar la resolución de la promesa y obtener los datos
+      const data = await response.json();
+      console.log(data);
+
+      if (data.status) {
+        // Actualizar estado con el saldo y la fecha
+        setCashInBox(parseFloat(data.response.balance));
+        setDateInBox(formatDate(data.response.date));
       }
     } catch (error) {
-      console.error("No se ha podido consultar los movimientos:", error);
+      console.error("Error al obtener datos del saldo:", error);
     }
   };
+
+  // Obtener movimientos efectuados
+  const obtenerMovimientosEfectuados = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/get-all-movement', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      // Esperar la resolución de la promesa y obtener los datos
+      const data = await response.json();
+      console.log(data);
+
+      if (data.status) {
+        setMovements(data.response); // Asumiendo que `data.response` es un array de movimientos
+      }
+    } catch (error) {
+      console.error('Error al obtener movimientos:', error);
+    }
+  };
+
+  // Llamar a obtenerSaldoActualizado y obtenerMovimientosEfectuados cuando el componente se monta
+  useEffect(() => {
+    obtenerSaldoActualizado();
+    obtenerMovimientosEfectuados();
+  }, []);
 
   return (
     <>
@@ -108,18 +110,19 @@ function Caja() {
           name="balance"
           type="number"
           placeholder="Ingrese un monto"
-          onChange={obtenerSaldo}
-          value={primerSaldo || ""}
+          onChange={obtenerSaldo} // Llamar a la función obtenerSaldo con el valor del input
+          value={saldo || ""} // Usar el valor de saldo
         />
-        <button onClick={cargarSaldoInicial}>Cargar Saldo Inicial</button>
+        <button onClick={handleCargarSaldo}>Cargar Saldo Inicial</button>
         <button>Ingresar saldo</button>
         <button>Retirar saldo</button>
         <div className="saldo">
-          ${cashInBox !== null && !isNaN(cashInBox)
+          $
+          {cashInBox !== null && !isNaN(cashInBox)
             ? cashInBox.toFixed(2)
             : "0.00"}
         </div>
-        <p>Última actualización:</p>
+        <p>Última carga de saldo:</p>
         <div className="fecha">{dateInBox || "Sin actualizar"}</div>
       </div>
       <div>
@@ -138,11 +141,13 @@ function Caja() {
               movements.map((movement, index) => (
                 <tr
                   key={index}
-                  className={movement.type === "Egreso" ? "row-egreso" : "row-ingreso"}
+                  className={
+                    movement.type === "Egreso" ? "row-egreso" : "row-ingreso"
+                  }
                 >
                   <td>{formatDate(movement.date)}</td>
-                  <td className="movement-color" >
-                    {movement.type === "Egreso" ?  "-" + "$"  : "+" + "$"}
+                  <td className="movement-color">
+                    {movement.type === "Egreso" ? "-" + "$" : "+" + "$"}
                     {movement.amount}
                   </td>
                   <td>{movement.description}</td>

@@ -58,3 +58,5 @@ app.use("/api/v1", routes);
 server.listen(port, () => {
   console.log("Servidor corriendo en puerto:", port);
 });
+
+export { io }

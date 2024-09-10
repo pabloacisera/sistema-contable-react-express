@@ -74,7 +74,7 @@ model Purchase {
   providerId Int
   productId Int
   quantity Int?
-  price Decimal? @db.Decimal(10, 2)
+  price    Float
   date DateTime @default(now())
   documents  Document[] // Relación con los documentos (opcional)
   provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)

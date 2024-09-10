@@ -106,48 +106,52 @@ export const updateIntoCashFromBox = async (req, res) => {
 };
 
 export const updateOutCashFromBox = async (req, res) => {
-    const { balance } = req.body;
-  
-    try {
-      // 1. Obtener el último registro
-      const lastRecord = await prisma.cashbox.findFirst({
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-  
-      if (!lastRecord) {
-        return res.status(404).json({
-          status: false,
-          message: "No se ha encontrado ningún registro previo.",
-        });
-      }
-  
-      // 2. Calcular el nuevo saldo
-      const newBalance = parseFloat(lastRecord.balance) - parseFloat(balance);
-  
-      // 3. Actualizar el registro existente con el nuevo saldo
-      const updatedRecord = await prisma.cashbox.update({
-        where: {
-          id: lastRecord.id, // Usar el ID del registro existente
-        },
-        data: {
-          balance: newBalance, // Actualizar el balance
-        },
-      });
-  
-      // Devolver el saldo actualizado y la fecha de actualización
-      return res.status(200).json({
-        status: true,
-        balance: updatedRecord.balance,
-        date: updatedRecord.date,
-      });
-    } catch (error) {
-      console.error("Error al actualizar el saldo:", error);
-      return res.status(500).json({
+  const { cashboxId, amount } = req.body;
+
+  if (!cashboxId || !amount) {
+    return res.status(400).json({
+      status: false,
+      message: "Faltan datos en la solicitud",
+    });
+  }
+
+  try {
+    // 1. Obtener el registro específico de la caja
+    const cashboxRecord = await prisma.cashbox.findUnique({
+      where: { id: parseInt(cashboxId) },
+    });
+
+    if (!cashboxRecord) {
+      return res.status(404).json({
         status: false,
-        message: "Error interno en el servidor",
+        message: "Registro de caja no encontrado.",
       });
     }
-  };
-  
+
+    // 2. Calcular el nuevo saldo
+    const newBalance = parseFloat(cashboxRecord.balance) - parseFloat(amount);
+
+    // 3. Actualizar el registro existente con el nuevo saldo
+    const updatedRecord = await prisma.cashbox.update({
+      where: {
+        id: cashboxRecord.id, // Usar el ID del registro existente
+      },
+      data: {
+        balance: newBalance, // Actualizar el balance
+      },
+    });
+
+    // Devolver el saldo actualizado
+    return res.status(200).json({
+      status: true,
+      balance: updatedRecord.balance,
+      date: updatedRecord.updatedAt, // Asume que 'updatedAt' es el campo de fecha actualizado
+    });
+  } catch (error) {
+    console.error("Error al actualizar el saldo:", error);
+    return res.status(500).json({
+      status: false,
+      message: "Error interno en el servidor",
+    });
+  }
+};

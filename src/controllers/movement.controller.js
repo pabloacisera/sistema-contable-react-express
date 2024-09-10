@@ -1,11 +1,20 @@
 import { PrismaClient } from "@prisma/client";
+import { io } from "../index.js";
 
 const prisma = new PrismaClient();
 
 export const createMovement = async (req, res) => {
-  console.log(req.body);
+  console.log("Datos recibidos:", req.body);
 
   const { amount, type, description, cashboxId } = req.body;
+
+  // Verificar que todos los datos estén presentes
+  if (!amount || !type || !description || !cashboxId) {
+    return res.status(400).json({
+      status: false,
+      message: "Faltan datos en la solicitud",
+    });
+  }
 
   // Verificar si el cashboxId existe
   const cashboxExists = await prisma.cashbox.findUnique({
@@ -28,6 +37,10 @@ export const createMovement = async (req, res) => {
         cashboxId: parseInt(cashboxId),
       },
     });
+
+    // Emitir el evento con socket
+    io.emit('movement-saved', movement);
+
     return res.status(200).json({
       status: true,
       data: movement,
@@ -41,6 +54,7 @@ export const createMovement = async (req, res) => {
     });
   }
 };
+
 
 export const getAllMovement = async (req, res) => {
   try {

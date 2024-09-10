@@ -1,200 +1,105 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function UpdateDocumentation() {
   const navigate = useNavigate();
-  const [document, setDocument] = useState(null);
-  const [idDeCompra, setIdDeCompra] = useState(null)
-  const [idDeMov, setIdDeMov] = useState(null)
 
-  // Prepara datos para guardar la compra
-  const handleCompra = () => {
-    const data = localStorage.getItem('Datos-Compra');
-    
-    if (data) {
-      try {
-        const parsedData = JSON.parse(data);
-        const dataToPurchase = {
-          providerId: parsedData.providerId,
-          productId: parsedData.productId,
-          quantity: parsedData.quantity,
-          date: parsedData.date,
-          price: parsedData.price
-        };
-        console.log(dataToPurchase);
-        return dataToPurchase;
-      } catch (error) {
-        console.error("Error parsing data from localStorage", error);
+  const realizarCompraSinComprobante = async () => {
+    try {
+      const dataCompraStr = localStorage.getItem("Datos-Compra");
+      if (!dataCompraStr) {
+        throw new Error("No hay datos de compra en el localStorage");
       }
-    }
-    return null;
-  };
 
-  // Guardar la compra
-  const guardarCompra = async () => {
-    const data = handleCompra();
-    console.log("Datos preparados para guardar:", data); // <-- Verifica si se están generando los datos
-    if (data) {
-      try {
-        const response = await fetch('http://localhost:3000/api/v1/create-purchase', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-  
-        if (response.ok) {
-          const result = await response.json();
-          console.log("Datos de compra guardados:", result);
-          setIdDeCompra(result.data.id)
-        } else {
-          console.error("Error en la respuesta del servidor:", response.statusText);
+      const dataCompra = JSON.parse(dataCompraStr);
+      console.log("Datos de compra:", dataCompra);
+
+      // Verificar el tipo de datos antes de enviarlo
+      const totalPrice = parseFloat(dataCompra.totalPrice);
+      if (isNaN(totalPrice) || totalPrice <= 0) {
+        console.error("Error en la validación de totalPrice:", totalPrice);
+        throw new Error("Total Price no es válido");
+      }
+
+      console.log(typeof totalPrice)
+      // Operación de compra
+      const purchaseResponse = await axios.post(
+        "http://localhost:3000/api/v1/create-purchase",
+        {
+          providerId: Number(dataCompra.providerId),
+          productId: Number(dataCompra.productId),
+          quantity: Number(dataCompra.quantity),
+          price: parseFloat(totalPrice), // Asegúrate de enviar el precio como decimal
+          date: new Date(dataCompra.date).toISOString(),
         }
-      } catch (error) {
-        console.error("Error guardando la compra:", error);
+      );
+
+      console.log("Respuesta de la compra:", purchaseResponse.data);
+
+      if (!purchaseResponse.data.status) {
+        throw new Error("Error al crear la compra");
       }
-    } else {
-      console.error("Datos de compra no válidos");
-    }
-  };
 
-  const handleMovement = () => {
-    const data = localStorage.getItem('Datos-Movimiento');
-
-    console.log(data)
-  
-    if (data) {
-      try {
-        const parsedData = JSON.parse(data); // Declara parsedData con const
-        const dataToMovement = { // Declara dataToMovement con const
-          amount: parsedData.amount,
-          type: parsedData.type,
-          description: parsedData.description,
-          date: parsedData.date,
-          cashboxId: parsedData.cashboxId
-        };
-        console.log(dataToMovement);
-        return dataToMovement;
-      } catch (error) {
-        console.error("Error parsing data from localStorage", error);
-      }
-    }
-    return null; // Asegúrate de devolver null en caso de que no haya datos
-  };
-  
-
-  const guardarMovimiento = async() => {
-    const data = handleMovement()
-    console.log('Datos de movimiento: ', data)
-    if(data){
-      try {
-        const response = await fetch('http://localhost:3000/api/v1/create-movement',
-          { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }
-        )
-        if(response.ok){
-          const result = await response.json()
-          console.log('Datos de movimiento guardados: ', result)
-          setIdDeMov(result.data.id)
-        } else {
-          console.error("Error en la respuesta del servidor:", response.statusText);
+      // Operación de movimiento
+      const movimientoResponse = await axios.post(
+        "http://localhost:3000/api/v1/create-movement",
+        {
+          amount: totalPrice,
+          type: "Egreso",
+          description: "Compra sin comprobante",
+          cashboxId: 42,
         }
-      } catch (error) {
-        console.error("Error guardando el movimiento:", error);
+      );
+
+      console.log("Respuesta del movimiento:", movimientoResponse.data);
+
+      if (!movimientoResponse.data.status) {
+        throw new Error("Error al crear el movimiento");
       }
-    }else {
-      console.error("Datos de movimiento no válidos");
-    }
-  }
-  
-  const confirmarCompraSinComprobante = async () => {
-    console.log("Iniciando compra sin comprobante");
-    await guardarCompra();
-    console.log("Compra sin comprobante procesada");
-    console.log("Iniciando movimiento sin comprabante")
-    await guardarMovimiento()
-    console.log('Movimiento sin comprobante procesado')
-  };
-  
 
-
-
-
-
-
-  const cancelar = () => {
-    localStorage.removeItem("Datos-Compra");
-    localStorage.removeItem("Datos-Movimiento");
-    navigate("/dash-admin-page/admin-proveedores");
-  };
-
-  const handleDocument = (e) => {
-    const file = e.target.files[0];
-    setDocument(file);
-  };
-
-  const guardarCompraConComprobante = async() => {
-    console.log("Iniciando compra con comprobante");
-  
-    // Asegúrate de que la compra y el movimiento se hayan guardado antes de continuar
-    await guardarCompra();
-    await guardarMovimiento();
-    
-    // Verifica si idDeCompra y idDeMov se han actualizado correctamente
-    if (idDeCompra && idDeMov) {
-        if (document) {
-            console.log('Documento cargado:', document.name);
-            
-            const formData = new FormData();
-            formData.append('document', document); // Agrega el archivo al formData
-            formData.append('purchaseId', idDeCompra);
-            formData.append('movementId', idDeMov);
-            formData.append('uploadedAt', new Date().toISOString());
-
-            // Aquí envías los datos al backend
-            try {
-                const response = await fetch('http://localhost:3000/api/v1/create-document', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log('Documento guardado exitosamente:', result);
-                } else {
-                    const error = await response.json();
-                    console.error('Error al guardar el documento:', error.message);
-                }
-            } catch (error) {
-                console.error('Error en la solicitud de guardar el documento:', error);
-            }
-        } else {
-            console.error('No se ha seleccionado ningún documento');
+      // Actualización de la caja
+      const updateResponse = await axios.post(
+        "http://localhost:3000/api/v1/update-out-balance",
+        {
+          cashboxId: 42,
+          amount: totalPrice,
         }
-    } else {
-        console.error('No se ha obtenido un idDeCompra o idDeMov válido');
+      );
+
+      console.log("Respuesta de actualización de saldo:", updateResponse.data);
+
+      if (!updateResponse.data.status) {
+        throw new Error("Error al actualizar el saldo de la caja");
+      }
+
+      // Limpiar datos del localStorage si todo fue exitoso
+      localStorage.removeItem("Datos-Compra");
+
+      navigate("/dash-admin-page/admin-caja");
+    } catch (error) {
+      console.error("Error en el proceso de compra:", error.message);
+      // Opcional: Mostrar mensaje de error al usuario
     }
-};
+  };
 
-  
-  
-
-  const confirmarCompraConComprobante = async () => {
-    guardarCompraConComprobante()    
+  const realizarCompraConComprobante = () => {
+    // Implementar funcionalidad para compra con comprobante
   };
 
   return (
     <div>
-      <input type="file" name="doc" id="doc" onChange={handleDocument} />
-      <button onClick={confirmarCompraConComprobante}>
-        Comprar con comprobante
+      <input type="file" />
+      <button onClick={realizarCompraConComprobante}>
+        Confirmar Compra con Comprobante
       </button>
-      <button onClick={confirmarCompraSinComprobante}>
-        Comprar sin comprobante
+      <button onClick={realizarCompraSinComprobante}>
+        Confirmar Compra Sin Comprobante
       </button>
-      <button onClick={cancelar}>Cancelar</button>
     </div>
   );
 }
 
 export default UpdateDocumentation;
+
+
